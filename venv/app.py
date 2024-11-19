@@ -1,12 +1,22 @@
+import os
 from flask import Flask, render_template, Response, request, jsonify
 import cv2
 import pickle
 import mediapipe as mp
 import numpy as np
 
-app = Flask(__name__, template_folder='./templates', static_folder='./static')
+# Dynamically get the path of the current script
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-model_dict = pickle.load(open('./model.p', 'rb'))
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, '../templates'),
+    static_folder=os.path.join(BASE_DIR, '../static')
+)
+
+# Correct path for model.p
+model_path = os.path.join(BASE_DIR, '../model.p')
+model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
 mp_hands = mp.solutions.hands
@@ -32,8 +42,8 @@ def generate_frames():
                 if current_theme['theme'] == 'pink':
                     # Draw multi-colored landmarks and connections
                     mp.solutions.drawing_utils.draw_landmarks(
-                        frame, 
-                        hand_landmarks, 
+                        frame,
+                        hand_landmarks,
                         mp_hands.HAND_CONNECTIONS,
                         mp.solutions.drawing_utils.DrawingSpec(color=(255, 0, 255), thickness=2, circle_radius=4),
                         mp.solutions.drawing_utils.DrawingSpec(color=(0, 255, 255), thickness=2, circle_radius=2)
@@ -67,11 +77,11 @@ def generate_frames():
             fontScale = 3  # Adjust for size
             thickness = 5  # Adjust for boldness
             cv2.putText(
-                frame, 
-                predicted_character, 
-                (10, 70), 
-                cv2.FONT_HERSHEY_SIMPLEX, 
-                fontScale, 
+                frame,
+                predicted_character,
+                (10, 70),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale,
                 (0, 0, 0),  # Black text color
                 thickness
             )
@@ -98,7 +108,7 @@ def switch_theme():
     new_theme = request.json.get('theme', 'main')  # Default to 'main' theme
     current_theme['theme'] = new_theme
     return jsonify({'message': f'Theme switched to {new_theme}'})
-
+    
 
 if __name__ == "__main__":
     app.run()
