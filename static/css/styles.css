@@ -19,15 +19,16 @@ body {
 
 /* Theme Variables */
 :root {
-    --gradient-start: #007AFF;
-    --gradient-end: #00D1FF; /* Default Blue Theme */
-    --text-color: #fff;
+    --gradient-start: #AFEEEE; /* Light turquoise */
+    --gradient-end: #FFFFFF; /* White */
+    --text-color: #333; /* Dark text for contrast */
 }
 
+
 body.pink-theme {
-    --gradient-start: #FFB6C1;
-    --gradient-end: #FF69B4; /* Baby Pink Theme */
-    --text-color: #000;
+    --gradient-start: #FFC0CB; /* Soft pink */
+    --gradient-end: #FFFFFF; /* White */
+    --text-color: #333;
 }
 
 /* Header Styles */
