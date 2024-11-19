@@ -22,10 +22,17 @@
       const body = document.body;
 
       themeToggleButton.addEventListener("click", () => {
-        body.classList.toggle("pink-theme");
-        themeToggleButton.textContent = body.classList.contains("pink-theme")
-          ? "Switch to Main Theme"
-          : "Switch to Pink Theme";
+        const newTheme = body.classList.toggle("pink-theme") ? "pink" : "main";
+        themeToggleButton.textContent = newTheme === "pink" ? "Switch to Main" : "Switch to Dev Mode";
+
+        // Send the theme to the backend
+        fetch('/switch_theme', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ theme: newTheme }),
+        });
       });
     </script>
   </body>
